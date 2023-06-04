@@ -43,7 +43,12 @@ inline fun <reified T : Any> createInstance(): T {
 }
 
 fun <T : Any> createInstance(kClass: KClass<T>): T {
-    return castNull()
+    return if (kClass.java.isArray) {
+        @Suppress("UNCHECKED_CAST")
+        JavaArray.newInstance(kClass.java.componentType, 0) as T
+    } else {
+        castNull()
+    }
 }
 
 /**

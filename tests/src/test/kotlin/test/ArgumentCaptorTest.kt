@@ -226,4 +226,18 @@ class ArgumentCaptorTest : TestBase() {
             }
         }
     }
+
+    @Test
+    fun argumentCaptor_vararg() {
+        /* Given */
+        val m: Methods = mock()
+
+        /* When */
+        m.varargBooleanResult("a", "b", "c")
+
+        /* Then */
+        val captor = argumentCaptor<Array<String>>()
+        verify(m).varargBooleanResult(*captor.capture())
+        expect(captor.lastValue).toBe(arrayOf("a", "b", "c"))
+    }
 }
